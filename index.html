@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>404 - Page Not Found | Playable Cubes</title>
+    <title>Playable Cubes - Cubes You Can Play</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -18,6 +18,8 @@
                         neonCyan: '#00f0ff',
                         neonPurple: '#a855f7',
                         neonPink: '#ff007f',
+                        neonYellow: '#facc15',
+                        neonGreen: '#22c55e',
                     },
                     fontFamily: {
                         sans: ['Inter', 'sans-serif'],
@@ -28,7 +30,7 @@
         }
     </script>
     <!-- Google Fonts & Font Awesome Icons -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&family=JetBrains+Mono:wght@500;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
@@ -36,152 +38,268 @@
             font-family: 'Inter', sans-serif;
             background-color: #0b0d17;
             background-image: 
-                radial-gradient(circle at 50% 30%, rgba(0, 240, 255, 0.12) 0%, transparent 60%),
+                radial-gradient(circle at 50% 15%, rgba(0, 240, 255, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 50% 85%, rgba(168, 85, 247, 0.08) 0%, transparent 50%),
                 linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
                 linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
-            background-size: 100% 100%, 30px 30px, 30px 30px;
+            background-size: 100% 100%, 100% 100%, 24px 24px, 24px 24px;
         }
 
-        /* 3D Cube Perspective Container */
-        .cube-scene {
-            perspective: 1000px;
+        .neon-glow-cyan {
+            box-shadow: 0 0 15px rgba(0, 240, 255, 0.25);
         }
 
-        /* Animated Cubes */
-        .cube-box {
-            position: relative;
-            transform-style: preserve-3d;
-            animation: spin 12s infinite linear;
+        .card-hover-effect {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        .cube-box-1 { animation: float 4s ease-in-out infinite, spin 14s infinite linear; }
-        .cube-box-2 { animation: float 5s ease-in-out infinite 0.5s, spin 18s infinite reverse linear; }
-        .cube-box-3 { animation: float 4.5s ease-in-out infinite 1s, spin 16s infinite linear; }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0px) rotateX(15deg) rotateY(15deg); }
-            50% { transform: translateY(-18px) rotateX(25deg) rotateY(30deg); }
+        .card-hover-effect:hover {
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 10px 25px -5px rgba(0, 240, 255, 0.3);
         }
 
-        @keyframes spin {
-            0% { transform: rotateX(0deg) rotateY(0deg); }
-            100% { transform: rotateX(360deg) rotateY(360deg); }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
         }
-
-        /* Individual Cube Face Styling */
-        .face {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            border-radius: 8px;
-            border: 2px solid rgba(0, 240, 255, 0.6);
-            background: rgba(21, 25, 40, 0.85);
-            backdrop-filter: blur(4px);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: inset 0 0 15px rgba(0, 240, 255, 0.2);
+        ::-webkit-scrollbar-track {
+            background: #0b0d17;
         }
-
-        /* Cube Dimensions for size 80px */
-        .cube-size-md { width: 80px; height: 80px; }
-        .cube-size-md .front  { transform: translateZ(40px); }
-        .cube-size-md .back   { transform: rotateY(180deg) translateZ(40px); }
-        .cube-size-md .right  { transform: rotateY(90deg) translateZ(40px); }
-        .cube-size-md .left   { transform: rotateY(-90deg) translateZ(40px); }
-        .cube-size-md .top    { transform: rotateX(90deg) translateZ(40px); }
-        .cube-size-md .bottom { transform: rotateX(-90deg) translateZ(40px); }
-
-        /* Cube Dimensions for size 100px */
-        .cube-size-lg { width: 100px; height: 100px; }
-        .cube-size-lg .front  { transform: translateZ(50px); border-color: rgba(168, 85, 247, 0.8); }
-        .cube-size-lg .back   { transform: rotateY(180deg) translateZ(50px); border-color: rgba(168, 85, 247, 0.8); }
-        .cube-size-lg .right  { transform: rotateY(90deg) translateZ(50px); border-color: rgba(168, 85, 247, 0.8); }
-        .cube-size-lg .left   { transform: rotateY(-90deg) translateZ(50px); border-color: rgba(168, 85, 247, 0.8); }
-        .cube-size-lg .top    { transform: rotateX(90deg) translateZ(50px); border-color: rgba(168, 85, 247, 0.8); }
-        .cube-size-lg .bottom { transform: rotateX(-90deg) translateZ(50px); border-color: rgba(168, 85, 247, 0.8); }
-
-        .neon-glow {
-            text-shadow: 0 0 20px rgba(0, 240, 255, 0.6), 0 0 40px rgba(168, 85, 247, 0.4);
+        ::-webkit-scrollbar-thumb {
+            background: #232b45;
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #00f0ff;
         }
     </style>
 </head>
-<body class="text-slate-200 min-h-screen flex flex-col justify-between items-center p-6 selection:bg-neonCyan selection:text-cubeDark">
+<body class="text-slate-200 min-h-screen flex flex-col items-center justify-between selection:bg-neonCyan selection:text-cubeDark">
 
-    <header class="w-full max-w-5xl flex items-center justify-between py-4">
-        <a href="/" class="flex items-center space-x-3 group">
-            <div class="w-9 h-9 rounded-lg bg-gradient-to-br from-neonCyan to-neonPurple p-0.5 flex items-center justify-center shadow-lg">
-                <div class="w-full h-full bg-cubeDark rounded-[7px] flex items-center justify-center">
-                    <i class="fa-solid fa-cube text-neonCyan group-hover:scale-110 transition-transform"></i>
+    <!-- Top Header Bar with Hamburger Menu & Title (From Sketch) -->
+    <header class="w-full max-w-md bg-cubeCard/90 border-b border-cubeBorder backdrop-blur-md sticky top-0 z-40 px-4 py-3 shadow-lg">
+        <div class="flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <!-- Hamburger Menu Toggle -->
+                <button onclick="toggleMenu()" class="text-slate-300 hover:text-neonCyan transition-colors p-1 text-xl focus:outline-none" aria-label="Menu">
+                    <i class="fa-solid fa-bars text-2xl"></i>
+                </button>
+                
+                <!-- Playable Cubes Title & Doodle Badge -->
+                <div class="flex items-center space-x-2">
+                    <div class="w-7 h-7 rounded-md bg-gradient-to-br from-neonCyan to-neonPurple p-0.5 flex items-center justify-center shadow">
+                        <div class="w-full h-full bg-cubeDark rounded-[4px] flex items-center justify-center">
+                            <i class="fa-solid fa-cube text-neonCyan text-xs"></i>
+                        </div>
+                    </div>
+                    <h1 class="font-extrabold text-lg tracking-wider text-white font-mono flex items-center">
+                        Playable<span class="text-neonCyan">Cubes</span>
+                    </h1>
                 </div>
             </div>
-            <span class="font-bold tracking-wider text-white font-mono text-sm">PLAYABLE<span class="text-neonCyan">CUBES</span></span>
-        </a>
-    </header>
 
-    <main class="flex flex-col items-center justify-center text-center my-auto py-12 max-w-2xl">
-        
-        <!-- Three Floating Cubes Display -->
-        <div class="cube-scene flex items-center justify-center gap-8 sm:gap-12 mb-12 h-36">
-            
-            <!-- Cube 1 (Cyan) -->
-            <div class="cube-box cube-box-1 cube-size-md">
-                <div class="face front"><i class="fa-solid fa-ghost text-neonCyan text-xl"></i></div>
-                <div class="face back"><i class="fa-solid fa-cube text-neonCyan text-xl"></i></div>
-                <div class="face right"><i class="fa-solid fa-gamepad text-neonCyan text-xl"></i></div>
-                <div class="face left"><i class="fa-solid fa-bug text-neonCyan text-xl"></i></div>
-                <div class="face top"><i class="fa-solid fa-cube text-neonCyan text-xl"></i></div>
-                <div class="face bottom"><i class="fa-solid fa-cube text-neonCyan text-xl"></i></div>
-            </div>
-
-            <!-- Cube 2 (Center Purple - Main) -->
-            <div class="cube-box cube-box-2 cube-size-lg">
-                <div class="face front"><span class="font-mono font-black text-neonPurple text-2xl">404</span></div>
-                <div class="face back"><span class="font-mono font-black text-neonPurple text-2xl">404</span></div>
-                <div class="face right"><i class="fa-solid fa-cubes text-neonPurple text-2xl"></i></div>
-                <div class="face left"><i class="fa-solid fa-cubes text-neonPurple text-2xl"></i></div>
-                <div class="face top"><i class="fa-solid fa-bolt text-neonPurple text-xl"></i></div>
-                <div class="face bottom"><i class="fa-solid fa-skull text-neonPurple text-xl"></i></div>
-            </div>
-
-            <!-- Cube 3 (Pink/Cyan) -->
-            <div class="cube-box cube-box-3 cube-size-md">
-                <div class="face front"><i class="fa-solid fa-compass text-neonPink text-xl"></i></div>
-                <div class="face back"><i class="fa-solid fa-cube text-neonPink text-xl"></i></div>
-                <div class="face right"><i class="fa-solid fa-dice-d6 text-neonPink text-xl"></i></div>
-                <div class="face left"><i class="fa-solid fa-unlink text-neonPink text-xl"></i></div>
-                <div class="face top"><i class="fa-solid fa-cube text-neonPink text-xl"></i></div>
-                <div class="face bottom"><i class="fa-solid fa-cube text-neonPink text-xl"></i></div>
-            </div>
-
+            <!-- Header Action Button -->
+            <a href="https://github.com/playablecubes/playablecubes.github.io" target="_blank" class="text-slate-400 hover:text-white transition-colors text-sm" aria-label="GitHub Repository">
+                <i class="fa-brands fa-github text-lg"></i>
+            </a>
         </div>
 
-        <!-- Requested Bold H1 Heading -->
-        <h1 class="text-5xl sm:text-7xl font-black text-white tracking-tight mb-4 neon-glow uppercase">
-            ERROR 404
-        </h1>
+        <!-- Subtitle from sketch: "cubes you can play" -->
+        <div class="text-center mt-1 border-t border-cubeBorder/40 pt-1.5">
+            <p class="text-xs font-mono text-neonCyan font-medium tracking-wide uppercase">
+                cubes you can play
+            </p>
+        </div>
+    </header>
 
-        <p class="text-slate-400 font-mono text-sm sm:text-base mb-8 max-w-md">
-            Lost in the grid? The cube or page you're searching for got rotated out of existence.
-        </p>
+    <!-- Slide-out Drawer Navigation Menu -->
+    <div id="sideMenu" class="fixed inset-0 bg-cubeDark/80 backdrop-blur-sm z-50 transition-opacity duration-300 opacity-0 pointer-events-none">
+        <div class="w-64 max-w-[80%] h-full bg-cubeCard border-r border-cubeBorder p-5 flex flex-col justify-between shadow-2xl">
+            <div>
+                <div class="flex items-center justify-between pb-4 border-b border-cubeBorder mb-4">
+                    <span class="font-mono font-bold text-white text-sm flex items-center gap-2">
+                        <i class="fa-solid fa-cubes text-neonCyan"></i>
+                        Arcade Directory
+                    </span>
+                    <button onclick="toggleMenu()" class="text-slate-400 hover:text-white">
+                        <i class="fa-solid fa-xmark text-lg"></i>
+                    </button>
+                </div>
 
-        <!-- Navigation Call to Action -->
-        <div class="flex flex-col sm:flex-row items-center gap-4">
-            <a href="/" class="w-full sm:w-auto bg-gradient-to-r from-neonCyan to-teal-400 text-cubeDark font-bold px-8 py-3.5 rounded-xl hover:opacity-90 transition-all shadow-lg flex items-center justify-center space-x-2 font-mono">
-                <i class="fa-solid fa-house"></i>
-                <span>Return to Arcade</span>
+                <nav class="space-y-2 text-sm font-mono">
+                    <a href="#" class="block p-2 rounded-lg bg-neonCyan/10 text-neonCyan font-bold border border-neonCyan/30">
+                        <i class="fa-solid fa-house mr-2"></i> Main Arcade
+                    </a>
+                    <a href="https://playablecubes.github.io/progress" class="block p-2 rounded-lg text-slate-300 hover:bg-cubeBorder transition-colors">
+                        <i class="fa-solid fa-spinner mr-2 text-neonPurple"></i> Progress Page
+                    </a>
+                    <a href="404.html" class="block p-2 rounded-lg text-slate-300 hover:bg-cubeBorder transition-colors">
+                        <i class="fa-solid fa-triangle-exclamation mr-2 text-neonYellow"></i> 404 Test Page
+                    </a>
+                </nav>
+            </div>
+
+            <div class="text-[11px] font-mono text-slate-500 border-t border-cubeBorder pt-4">
+                <p>Playable Cubes Studio</p>
+                <p class="text-slate-600 mt-0.5">Built with HTML & JS</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content Area: 2-Column Mobile Grid for Cards 1 to 10+ -->
+    <main class="w-full max-w-md px-4 py-5 flex-grow">
+        
+        <div class="grid grid-cols-2 gap-3.5" id="gameGrid">
+
+            <!-- Card 1: Trainset Virtual -->
+            <a href="https://playablecubes.github.io/progress" class="card-hover-effect bg-cubeCard border-2 border-neonCyan/40 rounded-2xl p-3.5 flex flex-col items-center justify-between text-center relative overflow-hidden group">
+                <div class="absolute top-2 left-2.5 font-mono text-[11px] font-bold text-neonCyan bg-neonCyan/10 px-2 py-0.5 rounded-full border border-neonCyan/30">1</div>
+                <div class="my-4 text-3xl text-neonCyan group-hover:scale-110 transition-transform">
+                    <i class="fa-solid fa-train"></i>
+                </div>
+                <div>
+                    <h3 class="font-bold text-sm text-white font-mono leading-tight">Trainset Virtual</h3>
+                    <p class="text-[10px] text-slate-400 mt-0.5">Track builder</p>
+                </div>
             </a>
-            <button onclick="history.back()" class="w-full sm:w-auto bg-cubeCard border border-cubeBorder hover:border-neonPurple text-slate-300 font-medium px-6 py-3.5 rounded-xl transition-all flex items-center justify-center space-x-2 font-mono text-sm">
-                <i class="fa-solid fa-arrow-left"></i>
-                <span>Go Back</span>
-            </button>
+
+            <!-- Card 2: Pet Bounce -->
+            <a href="https://playablecubes.github.io/progress" class="card-hover-effect bg-cubeCard border-2 border-neonPurple/40 rounded-2xl p-3.5 flex flex-col items-center justify-between text-center relative overflow-hidden group">
+                <div class="absolute top-2 left-2.5 font-mono text-[11px] font-bold text-neonPurple bg-neonPurple/10 px-2 py-0.5 rounded-full border border-neonPurple/30">2</div>
+                <div class="my-4 text-3xl text-neonPurple group-hover:scale-110 transition-transform">
+                    <i class="fa-solid fa-paw"></i>
+                </div>
+                <div>
+                    <h3 class="font-bold text-sm text-white font-mono leading-tight">Pet Bounce</h3>
+                    <p class="text-[10px] text-slate-400 mt-0.5">Cubies Add-on</p>
+                </div>
+            </a>
+
+            <!-- Card 3: Calculator XD -->
+            <a href="https://playablecubes.github.io/progress" class="card-hover-effect bg-cubeCard border-2 border-neonPink/40 rounded-2xl p-3.5 flex flex-col items-center justify-between text-center relative overflow-hidden group">
+                <div class="absolute top-2 left-2.5 font-mono text-[11px] font-bold text-neonPink bg-neonPink/10 px-2 py-0.5 rounded-full border border-neonPink/30">3</div>
+                <div class="my-4 text-3xl text-neonPink group-hover:scale-110 transition-transform">
+                    <i class="fa-solid fa-calculator"></i>
+                </div>
+                <div>
+                    <h3 class="font-bold text-sm text-white font-mono leading-tight">Calculator XD</h3>
+                    <p class="text-[10px] text-slate-400 mt-0.5">Fun utility</p>
+                </div>
+            </a>
+
+            <!-- Card 4: Whiteboard -->
+            <a href="https://playablecubes.github.io/progress" class="card-hover-effect bg-cubeCard border-2 border-neonYellow/40 rounded-2xl p-3.5 flex flex-col items-center justify-between text-center relative overflow-hidden group">
+                <div class="absolute top-2 left-2.5 font-mono text-[11px] font-bold text-neonYellow bg-neonYellow/10 px-2 py-0.5 rounded-full border border-neonYellow/30">4</div>
+                <div class="my-4 text-3xl text-neonYellow group-hover:scale-110 transition-transform">
+                    <i class="fa-solid fa-pen-ruler"></i>
+                </div>
+                <div>
+                    <h3 class="font-bold text-sm text-white font-mono leading-tight">Whiteboard</h3>
+                    <p class="text-[10px] text-slate-400 mt-0.5">Doodle canvas</p>
+                </div>
+            </a>
+
+            <!-- Card 5: Math Mayhem -->
+            <a href="https://playablecubes.github.io/progress" class="card-hover-effect bg-cubeCard border-2 border-neonGreen/40 rounded-2xl p-3.5 flex flex-col items-center justify-between text-center relative overflow-hidden group">
+                <div class="absolute top-2 left-2.5 font-mono text-[11px] font-bold text-neonGreen bg-neonGreen/10 px-2 py-0.5 rounded-full border border-neonGreen/30">5</div>
+                <div class="my-4 text-3xl text-neonGreen group-hover:scale-110 transition-transform">
+                    <i class="fa-solid fa-brain"></i>
+                </div>
+                <div>
+                    <h3 class="font-bold text-sm text-white font-mono leading-tight">Math Mayhem</h3>
+                    <p class="text-[10px] text-slate-400 mt-0.5">Speed challenge</p>
+                </div>
+            </a>
+
+            <!-- Card 6: Cubies Block -->
+            <a href="https://playablecubes.github.io/progress" class="card-hover-effect bg-cubeCard border-2 border-neonCyan/60 rounded-2xl p-3.5 flex flex-col items-center justify-between text-center relative overflow-hidden group shadow-lg">
+                <div class="absolute top-2 left-2.5 font-mono text-[11px] font-bold text-neonCyan bg-neonCyan/20 px-2 py-0.5 rounded-full border border-neonCyan">6</div>
+                <div class="my-4 text-3xl text-neonCyan group-hover:rotate-12 transition-transform">
+                    <i class="fa-solid fa-cubes"></i>
+                </div>
+                <div>
+                    <h3 class="font-bold text-sm text-white font-mono leading-tight">Cubies Block</h3>
+                    <p class="text-[10px] text-neonCyan font-mono mt-0.5">Core Arcade</p>
+                </div>
+            </a>
+
+            <!-- Card 7: Whispers Maze -->
+            <a href="https://playablecubes.github.io/progress" class="card-hover-effect bg-cubeCard border-2 border-neonPurple/60 rounded-2xl p-3.5 flex flex-col items-center justify-between text-center relative overflow-hidden group">
+                <div class="absolute top-2 left-2.5 font-mono text-[11px] font-bold text-neonPurple bg-neonPurple/20 px-2 py-0.5 rounded-full border border-neonPurple">7</div>
+                <div class="my-4 text-3xl text-neonPurple group-hover:scale-110 transition-transform">
+                    <i class="fa-solid fa-ghost"></i>
+                </div>
+                <div>
+                    <h3 class="font-bold text-sm text-white font-mono leading-tight">Whispers Maze</h3>
+                    <p class="text-[10px] text-neonPurple font-mono mt-0.5">Maze runner</p>
+                </div>
+            </a>
+
+            <!-- Card 8: Choo Choo Cubies -->
+            <a href="https://playablecubes.github.io/progress" class="card-hover-effect bg-cubeCard border-2 border-neonPink/40 rounded-2xl p-3.5 flex flex-col items-center justify-between text-center relative overflow-hidden group">
+                <div class="absolute top-2 left-2.5 font-mono text-[11px] font-bold text-neonPink bg-neonPink/10 px-2 py-0.5 rounded-full border border-neonPink/30">8</div>
+                <div class="my-4 text-3xl text-neonPink group-hover:scale-110 transition-transform">
+                    <i class="fa-solid fa-train-subway"></i>
+                </div>
+                <div>
+                    <h3 class="font-bold text-sm text-white font-mono leading-tight">Choo Choo Cubies</h3>
+                    <p class="text-[10px] text-slate-400 mt-0.5">Train adventure</p>
+                </div>
+            </a>
+
+            <!-- Card 9: Hide n' Seek -->
+            <a href="https://playablecubes.github.io/progress" class="card-hover-effect bg-cubeCard border-2 border-neonYellow/40 rounded-2xl p-3.5 flex flex-col items-center justify-between text-center relative overflow-hidden group">
+                <div class="absolute top-2 left-2.5 font-mono text-[11px] font-bold text-neonYellow bg-neonYellow/10 px-2 py-0.5 rounded-full border border-neonYellow/30">9</div>
+                <div class="my-4 text-3xl text-neonYellow group-hover:scale-110 transition-transform">
+                    <i class="fa-solid fa-eye-slash"></i>
+                </div>
+                <div>
+                    <h3 class="font-bold text-sm text-white font-mono leading-tight">Hide n' Seek</h3>
+                    <p class="text-[10px] text-slate-400 mt-0.5">Stealth game</p>
+                </div>
+            </a>
+
+            <!-- Card 10: Open Cubies -->
+            <a href="https://playablecubes.github.io/progress" class="card-hover-effect bg-cubeCard border-2 border-neonGreen/40 rounded-2xl p-3.5 flex flex-col items-center justify-between text-center relative overflow-hidden group">
+                <div class="absolute top-2 left-2.5 font-mono text-[11px] font-bold text-neonGreen bg-neonGreen/10 px-2 py-0.5 rounded-full border border-neonGreen/30">10</div>
+                <div class="my-4 text-3xl text-neonGreen group-hover:scale-110 transition-transform">
+                    <i class="fa-solid fa-code"></i>
+                </div>
+                <div>
+                    <h3 class="font-bold text-sm text-white font-mono leading-tight">Open Cubies</h3>
+                    <p class="text-[10px] text-slate-400 mt-0.5">Open Source</p>
+                </div>
+            </a>
+
         </div>
 
     </main>
 
-    <footer class="w-full max-w-5xl text-center py-4 text-xs font-mono text-slate-500 border-t border-cubeBorder/40">
-        <span>Playable Cubes Studio &bull; Lost Block Index #404</span>
+    <!-- Footer Bar directly from sketch: [Home Icon] MAR - footer -->
+    <footer class="w-full max-w-md bg-cubeCard/90 border-t border-cubeBorder py-3 px-4 backdrop-blur-md sticky bottom-0 z-40 text-center">
+        <div class="flex items-center justify-center space-x-2 text-xs font-mono text-slate-400">
+            <!-- Home icon from sketch -->
+            <i class="fa-solid fa-house text-neonCyan"></i>
+            <span class="font-bold tracking-wider text-slate-200">Made by PlayableC🧊bes</span>
+            <span class="text-slate-500">&bull;</span>
+            <span class="text-slate-400">Playable Cubes Arcade</span>
+        </div>
     </footer>
 
+    <!-- Interactive Logic Script -->
+    <script>
+        function toggleMenu() {
+            const menu = document.getElementById('sideMenu');
+            const isHidden = menu.classList.contains('opacity-0');
+
+            if (isHidden) {
+                menu.classList.remove('opacity-0', 'pointer-events-none');
+                menu.classList.add('opacity-100');
+            } else {
+                menu.classList.remove('opacity-100');
+                menu.classList.add('opacity-0', 'pointer-events-none');
+            }
+        }
+    </script>
 </body>
 </html>
