@@ -1,0 +1,310 @@
+```html
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Playable Cubes - Cubes You Can Play</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        cubeDark: '#0b0d17',
+                        cubeCard: '#151928',
+                        cubeBorder: '#232b45',
+                        neonCyan: '#00f0ff',
+                        neonPurple: '#a855f7',
+                        neonPink: '#ff007f',
+                        neonYellow: '#facc15',
+                        neonGreen: '#22c55e',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Google Fonts & Font Awesome Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&family=JetBrains+Mono:wght@500;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0b0d17;
+            background-image: 
+                radial-gradient(circle at 50% 15%, rgba(0, 240, 255, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 50% 85%, rgba(168, 85, 247, 0.08) 0%, transparent 50%),
+                linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+            background-size: 100% 100%, 100% 100%, 24px 24px, 24px 24px;
+        }
+
+        .neon-glow-cyan {
+            box-shadow: 0 0 15px rgba(0, 240, 255, 0.25);
+        }
+
+        .card-hover-effect {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .card-hover-effect:hover {
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 10px 25px -5px rgba(0, 240, 255, 0.3);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0b0d17;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #232b45;
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #00f0ff;
+        }
+    </style>
+</head>
+<body class="text-slate-200 min-h-screen flex flex-col items-center justify-between selection:bg-neonCyan selection:text-cubeDark">
+
+    <!-- Top Header Bar with Hamburger Menu & Title (From Sketch) -->
+    <header class="w-full max-w-md bg-cubeCard/90 border-b border-cubeBorder backdrop-blur-md sticky top-0 z-40 px-4 py-3 shadow-lg">
+        <div class="flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <!-- Hamburger Menu Toggle -->
+                <button onclick="toggleMenu()" class="text-slate-300 hover:text-neonCyan transition-colors p-1 text-xl focus:outline-none" aria-label="Menu">
+                    <i class="fa-solid fa-bars text-2xl"></i>
+                </button>
+                
+                <!-- Playable Cubes Title & Doodle Badge -->
+                <div class="flex items-center space-x-2">
+                    <div class="w-7 h-7 rounded-md bg-gradient-to-br from-neonCyan to-neonPurple p-0.5 flex items-center justify-center shadow">
+                        <div class="w-full h-full bg-cubeDark rounded-[4px] flex items-center justify-center">
+                            <i class="fa-solid fa-cube text-neonCyan text-xs"></i>
+                        </div>
+                    </div>
+                    <h1 class="font-extrabold text-lg tracking-wider text-white font-mono flex items-center">
+                        Playable<span class="text-neonCyan">Cubes</span>
+                    </h1>
+                </div>
+            </div>
+
+            <!-- Header Action Button -->
+            <a href="https://github.com" target="_blank" class="text-slate-400 hover:text-white transition-colors text-sm">
+                <i class="fa-brands fa-github text-lg"></i>
+            </a>
+        </div>
+
+        <!-- Subtitle from sketch: "cubes you can play" -->
+        <div class="text-center mt-1 border-t border-cubeBorder/40 pt-1.5">
+            <p class="text-xs font-mono text-neonCyan font-medium tracking-wide uppercase">
+                cubes you can play
+            </p>
+        </div>
+    </header>
+
+    <!-- Slide-out Drawer Navigation Menu -->
+    <div id="sideMenu" class="fixed inset-0 bg-cubeDark/80 backdrop-blur-sm z-50 transition-opacity duration-300 opacity-0 pointer-events-none">
+        <div class="w-64 max-w-[80%] h-full bg-cubeCard border-r border-cubeBorder p-5 flex flex-col justify-between shadow-2xl">
+            <div>
+                <div class="flex items-center justify-between pb-4 border-b border-cubeBorder mb-4">
+                    <span class="font-mono font-bold text-white text-sm flex items-center gap-2">
+                        <i class="fa-solid fa-cubes text-neonCyan"></i>
+                        Arcade Directory
+                    </span>
+                    <button onclick="toggleMenu()" class="text-slate-400 hover:text-white">
+                        <i class="fa-solid fa-xmark text-lg"></i>
+                    </button>
+                </div>
+
+                <nav class="space-y-2 text-sm font-mono">
+                    <a href="#" class="block p-2 rounded-lg bg-neonCyan/10 text-neonCyan font-bold border border-neonCyan/30">
+                        <i class="fa-solid fa-house mr-2"></i> Main Arcade
+                    </a>
+                    <a href="cubiesblock/" class="block p-2 rounded-lg text-slate-300 hover:bg-cubeBorder transition-colors">
+                        <i class="fa-solid fa-cube mr-2 text-neonPurple"></i> Cubies Block
+                    </a>
+                    <a href="whispersmaze/" class="block p-2 rounded-lg text-slate-300 hover:bg-cubeBorder transition-colors">
+                        <i class="fa-solid fa-ghost mr-2 text-neonPink"></i> Whispers Maze
+                    </a>
+                    <a href="404.html" class="block p-2 rounded-lg text-slate-300 hover:bg-cubeBorder transition-colors">
+                        <i class="fa-solid fa-triangle-exclamation mr-2 text-neonYellow"></i> 404 Test Page
+                    </a>
+                </nav>
+            </div>
+
+            <div class="text-[11px] font-mono text-slate-500 border-t border-cubeBorder pt-4">
+                <p>Playable Cubes Studio</p>
+                <p class="text-slate-600 mt-0.5">Built with HTML & JS</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content Area: 2-Column Mobile Grid for Cards 1 to 10+ -->
+    <main class="w-full max-w-md px-4 py-5 flex-grow">
+        
+        <div class="grid grid-cols-2 gap-3.5" id="gameGrid">
+
+            <!-- Card 1: Trainset Virtual -->
+            <a href="trainset/" class="card-hover-effect bg-cubeCard border-2 border-neonCyan/40 rounded-2xl p-3.5 flex flex-col items-center justify-between text-center relative overflow-hidden group">
+                <div class="absolute top-2 left-2.5 font-mono text-[11px] font-bold text-neonCyan bg-neonCyan/10 px-2 py-0.5 rounded-full border border-neonCyan/30">1</div>
+                <div class="my-4 text-3xl text-neonCyan group-hover:scale-110 transition-transform">
+                    <i class="fa-solid fa-train"></i>
+                </div>
+                <div>
+                    <h3 class="font-bold text-sm text-white font-mono leading-tight">Trainset Virtual</h3>
+                    <p class="text-[10px] text-slate-400 mt-0.5">Track builder</p>
+                </div>
+            </a>
+
+            <!-- Card 2: Pet Bounce -->
+            <a href="petbounce/" class="card-hover-effect bg-cubeCard border-2 border-neonPurple/40 rounded-2xl p-3.5 flex flex-col items-center justify-between text-center relative overflow-hidden group">
+                <div class="absolute top-2 left-2.5 font-mono text-[11px] font-bold text-neonPurple bg-neonPurple/10 px-2 py-0.5 rounded-full border border-neonPurple/30">2</div>
+                <div class="my-4 text-3xl text-neonPurple group-hover:scale-110 transition-transform">
+                    <i class="fa-solid fa-paw"></i>
+                </div>
+                <div>
+                    <h3 class="font-bold text-sm text-white font-mono leading-tight">Pet Bounce</h3>
+                    <p class="text-[10px] text-slate-400 mt-0.5">Cubies Add-on</p>
+                </div>
+            </a>
+
+            <!-- Card 3: Calculator XD -->
+            <a href="calculator/" class="card-hover-effect bg-cubeCard border-2 border-neonPink/40 rounded-2xl p-3.5 flex flex-col items-center justify-between text-center relative overflow-hidden group">
+                <div class="absolute top-2 left-2.5 font-mono text-[11px] font-bold text-neonPink bg-neonPink/10 px-2 py-0.5 rounded-full border border-neonPink/30">3</div>
+                <div class="my-4 text-3xl text-neonPink group-hover:scale-110 transition-transform">
+                    <i class="fa-solid fa-calculator"></i>
+                </div>
+                <div>
+                    <h3 class="font-bold text-sm text-white font-mono leading-tight">Calculator XD</h3>
+                    <p class="text-[10px] text-slate-400 mt-0.5">Fun utility</p>
+                </div>
+            </a>
+
+            <!-- Card 4: Whiteboard -->
+            <a href="whiteboard/" class="card-hover-effect bg-cubeCard border-2 border-neonYellow/40 rounded-2xl p-3.5 flex flex-col items-center justify-between text-center relative overflow-hidden group">
+                <div class="absolute top-2 left-2.5 font-mono text-[11px] font-bold text-neonYellow bg-neonYellow/10 px-2 py-0.5 rounded-full border border-neonYellow/30">4</div>
+                <div class="my-4 text-3xl text-neonYellow group-hover:scale-110 transition-transform">
+                    <i class="fa-solid fa-pen-ruler"></i>
+                </div>
+                <div>
+                    <h3 class="font-bold text-sm text-white font-mono leading-tight">Whiteboard</h3>
+                    <p class="text-[10px] text-slate-400 mt-0.5">Doodle canvas</p>
+                </div>
+            </a>
+
+            <!-- Card 5: Math Mayhem -->
+            <a href="mathmayhem/" class="card-hover-effect bg-cubeCard border-2 border-neonGreen/40 rounded-2xl p-3.5 flex flex-col items-center justify-between text-center relative overflow-hidden group">
+                <div class="absolute top-2 left-2.5 font-mono text-[11px] font-bold text-neonGreen bg-neonGreen/10 px-2 py-0.5 rounded-full border border-neonGreen/30">5</div>
+                <div class="my-4 text-3xl text-neonGreen group-hover:scale-110 transition-transform">
+                    <i class="fa-solid fa-brain"></i>
+                </div>
+                <div>
+                    <h3 class="font-bold text-sm text-white font-mono leading-tight">Math Mayhem</h3>
+                    <p class="text-[10px] text-slate-400 mt-0.5">Speed challenge</p>
+                </div>
+            </a>
+
+            <!-- Card 6: Cubies Block -->
+            <a href="cubiesblock/" class="card-hover-effect bg-cubeCard border-2 border-neonCyan/60 rounded-2xl p-3.5 flex flex-col items-center justify-between text-center relative overflow-hidden group shadow-lg">
+                <div class="absolute top-2 left-2.5 font-mono text-[11px] font-bold text-neonCyan bg-neonCyan/20 px-2 py-0.5 rounded-full border border-neonCyan">6</div>
+                <div class="my-4 text-3xl text-neonCyan group-hover:rotate-12 transition-transform">
+                    <i class="fa-solid fa-cubes"></i>
+                </div>
+                <div>
+                    <h3 class="font-bold text-sm text-white font-mono leading-tight">Cubies Block</h3>
+                    <p class="text-[10px] text-neonCyan font-mono mt-0.5">Core Arcade</p>
+                </div>
+            </a>
+
+            <!-- Card 7: Whispers Maze -->
+            <a href="whispersmaze/" class="card-hover-effect bg-cubeCard border-2 border-neonPurple/60 rounded-2xl p-3.5 flex flex-col items-center justify-between text-center relative overflow-hidden group">
+                <div class="absolute top-2 left-2.5 font-mono text-[11px] font-bold text-neonPurple bg-neonPurple/20 px-2 py-0.5 rounded-full border border-neonPurple">7</div>
+                <div class="my-4 text-3xl text-neonPurple group-hover:scale-110 transition-transform">
+                    <i class="fa-solid fa-ghost"></i>
+                </div>
+                <div>
+                    <h3 class="font-bold text-sm text-white font-mono leading-tight">Whispers Maze</h3>
+                    <p class="text-[10px] text-neonPurple font-mono mt-0.5">Maze runner</p>
+                </div>
+            </a>
+
+            <!-- Card 8: Choo Choo Cubies -->
+            <a href="choochoo/" class="card-hover-effect bg-cubeCard border-2 border-neonPink/40 rounded-2xl p-3.5 flex flex-col items-center justify-between text-center relative overflow-hidden group">
+                <div class="absolute top-2 left-2.5 font-mono text-[11px] font-bold text-neonPink bg-neonPink/10 px-2 py-0.5 rounded-full border border-neonPink/30">8</div>
+                <div class="my-4 text-3xl text-neonPink group-hover:scale-110 transition-transform">
+                    <i class="fa-solid fa-train-subway"></i>
+                </div>
+                <div>
+                    <h3 class="font-bold text-sm text-white font-mono leading-tight">Choo Choo Cubies</h3>
+                    <p class="text-[10px] text-slate-400 mt-0.5">Train adventure</p>
+                </div>
+            </a>
+
+            <!-- Card 9: Hide n' Seek -->
+            <a href="hidenseek/" class="card-hover-effect bg-cubeCard border-2 border-neonYellow/40 rounded-2xl p-3.5 flex flex-col items-center justify-between text-center relative overflow-hidden group">
+                <div class="absolute top-2 left-2.5 font-mono text-[11px] font-bold text-neonYellow bg-neonYellow/10 px-2 py-0.5 rounded-full border border-neonYellow/30">9</div>
+                <div class="my-4 text-3xl text-neonYellow group-hover:scale-110 transition-transform">
+                    <i class="fa-solid fa-eye-slash"></i>
+                </div>
+                <div>
+                    <h3 class="font-bold text-sm text-white font-mono leading-tight">Hide n' Seek</h3>
+                    <p class="text-[10px] text-slate-400 mt-0.5">Stealth game</p>
+                </div>
+            </a>
+
+            <!-- Card 10: Open Cubies -->
+            <a href="opencubies/" class="card-hover-effect bg-cubeCard border-2 border-neonGreen/40 rounded-2xl p-3.5 flex flex-col items-center justify-between text-center relative overflow-hidden group">
+                <div class="absolute top-2 left-2.5 font-mono text-[11px] font-bold text-neonGreen bg-neonGreen/10 px-2 py-0.5 rounded-full border border-neonGreen/30">10</div>
+                <div class="my-4 text-3xl text-neonGreen group-hover:scale-110 transition-transform">
+                    <i class="fa-solid fa-code"></i>
+                </div>
+                <div>
+                    <h3 class="font-bold text-sm text-white font-mono leading-tight">Open Cubies</h3>
+                    <p class="text-[10px] text-slate-400 mt-0.5">Open Source</p>
+                </div>
+            </a>
+
+        </div>
+
+    </main>
+
+    <!-- Footer Bar directly from sketch: [Home Icon] MAR - footer -->
+    <footer class="w-full max-w-md bg-cubeCard/90 border-t border-cubeBorder py-3 px-4 backdrop-blur-md sticky bottom-0 z-40 text-center">
+        <div class="flex items-center justify-center space-x-2 text-xs font-mono text-slate-400">
+            <!-- Home icon from sketch -->
+            <i class="fa-solid fa-house text-neonCyan"></i>
+            <span class="font-bold tracking-wider text-slate-200">MAR</span>
+            <span class="text-slate-500">&bull;</span>
+            <span class="text-slate-400">Playable Cubes Arcade</span>
+        </div>
+    </footer>
+
+    <!-- Interactive Logic Script -->
+    <script>
+        function toggleMenu() {
+            const menu = document.getElementById('sideMenu');
+            const isHidden = menu.classList.contains('opacity-0');
+
+            if (isHidden) {
+                menu.classList.remove('opacity-0', 'pointer-events-none');
+                menu.classList.add('opacity-100');
+            } else {
+                menu.classList.remove('opacity-100');
+                menu.classList.add('opacity-0', 'pointer-events-none');
+            }
+        }
+    </script>
+</body>
+</html>
+```
